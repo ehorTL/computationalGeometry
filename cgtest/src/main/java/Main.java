@@ -1,8 +1,19 @@
+import beziersurface.BezierSurface;
+import beziersurface.Drawer3D;
+import beziersurface.Point3DWriteable;
+import hermite.Drawer;
 import hermite.HermiteSpline;
+import javafx.application.Application;
+import javafx.geometry.Point3D;
 
 import java.awt.geom.Point2D;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static java.lang.System.exit;
 
 public class Main {
 
@@ -19,21 +30,20 @@ public class Main {
             new Point2D.Double(8, 4), new Point2D.Double(9, 4), new Point2D.Double(10, 3)
     }));
 
-
     public static void main(String[] args) throws Exception {
-//        HermiteSpline hermiteSpline = new HermiteSpline(controlPoints, null, false);
-
-        HermiteSpline hermiteSpline = new HermiteSpline(controlPoints, derivativesTestInput, true);
-
+        HermiteSpline hermiteSpline = new HermiteSpline(controlPoints, null, false);
+//        HermiteSpline hermiteSpline = new HermiteSpline(controlPoints, derivativesTestInput, true);
         hermiteSpline.generatePoints();
         ArrayList<Point2D> curvePoints = hermiteSpline.getCurvePoints();
 
         scalePoints(VIEW_SCALE, curvePoints);
         scalePoints(VIEW_SCALE, controlPoints);
-
         Drawer drawer = new Drawer("Hermite Spline", curvePoints, controlPoints, true);
     }
 
+    /**
+     * Multiplies each coordinate of points array by coef internally.
+     * */
     public static void scalePoints(int coef, ArrayList<Point2D> points){
         points.forEach(p -> {
             p.setLocation(p.getX() * coef, p.getY() * coef);
